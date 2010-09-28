@@ -14,6 +14,7 @@ class WorkflowAdmin(admin.ModelAdmin):
     """
     Workflow administration
     """
+    raw_id_fields = ('created_by',)
     list_display = ['name', 'description', 'status', 'created_on', 'created_by',
             'cloned_from']
     search_fields = ['name', 'description']
@@ -25,8 +26,9 @@ class StateAdmin(admin.ModelAdmin):
     """
     State administration
     """
-    list_display = ['name', 'description']
+    list_display = ['name', 'workflow', 'description']
     search_fields = ['name', 'description']
+    list_filter = ['workflow']
     save_on_top = True
 
 class TransitionAdmin(admin.ModelAdmin):
@@ -35,6 +37,7 @@ class TransitionAdmin(admin.ModelAdmin):
     """
     list_display = ['name', 'from_state', 'to_state']
     search_fields = ['name',]
+    list_filter = ['workflow']
     save_on_top = True
 
 class EventTypeAdmin(admin.ModelAdmin):
@@ -52,7 +55,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'workflow', 'state', 'is_mandatory']
     save_on_top = True
     search_fields = ['name', 'description']
-    list_filter = ['event_types', 'is_mandatory']
+    list_filter = ['event_types', 'workflow', 'is_mandatory']
 
 admin.site.register(Role, RoleAdmin)
 admin.site.register(Workflow, WorkflowAdmin)
