@@ -491,7 +491,8 @@ class State(models.Model):
         return datetime.datetime.today()
 
     def __unicode__(self):
-        return self.name
+        return self.workflow.name + ': ' + self.name
+    
 
     class Meta:
         ordering = ['-is_start_state','is_end_state']
@@ -531,8 +532,8 @@ class Transition(models.Model):
             )
 
     def __unicode__(self):
-        return self.name
-
+        return self.workflow.name + ': ' + self.name
+    
     class Meta:
         verbose_name = _('Transition')
         verbose_name_plural = _('Transitions')
@@ -600,8 +601,11 @@ class Event(models.Model):
             )
 
     def __unicode__(self):
-        return self.name
-
+        if self.workflow:
+            return self.workflow.name + ': ' + self.name
+        else:
+            return self.name
+    
     class Meta:
         verbose_name = _('Event')
         verbose_name_plural = _('Events')
